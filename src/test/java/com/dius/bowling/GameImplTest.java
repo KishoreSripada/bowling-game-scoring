@@ -4,6 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
+import com.dius.bowling.exceptions.ExceededMaxPinsException;
+import com.dius.bowling.exceptions.InvalidInputException;
+
 public class GameImplTest {
     private Game game;
 
@@ -17,6 +20,12 @@ public class GameImplTest {
         game.roll(0);
         game.roll(0);
         assertEquals(0, game.score());
+    }
+
+    @Test(expected = ExceededMaxPinsException.class)
+    public void test_when_roll_is_1_and_10_to_throw_exception() throws Exception {
+        game.roll(1);
+        game.roll(10);
     }
 
     @Test
@@ -34,7 +43,7 @@ public class GameImplTest {
     }
 
     @Test
-    public void roll4And6And5And0ShouldScore20() throws Exception {
+    public void test_when_4_6_5_0_rolls_to_score_20() throws Exception {
         game.roll(4);
         game.roll(6);
         game.roll(5);
@@ -57,14 +66,53 @@ public class GameImplTest {
     }
 
     @Test
-    public void allStrikesShouldScore300() throws Exception {
+    public void test_when_all_rolls_are_strike_to_score_300() throws Exception {
         this.generateMultipleRolls(11, 10);
         assertEquals(300, game.score());
     }
 
-    private void generateMultipleRolls(int times, int noOfPins) {
+    @Test(expected = InvalidInputException.class)
+    public void test_when_more_than_ten_frames() throws Exception {
+        this.generateMultipleRolls(21, 1);
+    }
+
+    @Test
+    public void test_when_spare_in_last_bowl_to_allow_another_bowl() throws Exception {
+        this.generateMultipleRolls(19, 1);
+        game.roll(9);
+        game.roll(1);
+        assertEquals(30, game.score());
+    }
+
+    @Test(expected = InvalidInputException.class)
+    public void test_when_spare_in_last_bowl_not_to_allow_more_than_one_bowl() throws Exception {
+        this.generateMultipleRolls(19, 1);
+        game.roll(9);
+        game.roll(1);
+        game.roll(1);
+    }
+
+    @Test
+    public void test_when_strike_in_last_bowl_to_allow_two_bowls() throws Exception {
+        this.generateMultipleRolls(18, 1);
+        game.roll(10);
+        game.roll(1);
+        game.roll(1);
+        assertEquals(32, game.score());
+    }
+
+    @Test(expected = InvalidInputException.class)
+    public void test_when_strike_in_last_bowl_not_to_allow_more_than_two_bowls() throws Exception {
+        this.generateMultipleRolls(18, 1);
+        game.roll(10);
+        game.roll(1);
+        game.roll(1);
+        game.roll(1);
+    }
+
+    private void generateMultipleRolls(int times, int pins) throws InvalidInputException, ExceededMaxPinsException {
         for (int i = 0; i < times; i++) {
-            game.roll(noOfPins);
+            game.roll(pins);
         }
     }
 }
