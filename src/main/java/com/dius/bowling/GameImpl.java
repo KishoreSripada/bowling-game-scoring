@@ -19,10 +19,10 @@ public class GameImpl implements Game {
 
     public int score() {
         int score = 0;
-        for ( Frame f : frames) {
-            score +=  f.score();
+
+        for ( int i=0; i<frames.size();i++) {
+            score +=  scorePerFrame(i);
         }
-        System.out.println("score is " + score);
         return score;
     }
 
@@ -39,5 +39,19 @@ public class GameImpl implements Game {
         if (pins == 10) {
             secondRoll(0);
         }
+    }
+
+    private int scorePerFrame(int i) {
+        int result = frames.get(i).score();
+        if (i == 0) {
+            return result;
+        }
+        if (frames.get(i - 1).isSpare()) {
+            result += frames.get(i).firstRoll();
+        }
+        if (frames.get(i - 1).isStrike()) {
+            result += frames.get(i).score();
+        }
+        return result;
     }
 }
