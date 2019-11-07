@@ -2,7 +2,7 @@ package com.dius.bowling;
 
 import java.util.ArrayList;
 import java.util.List;
-
+                                                                              
 public class GameImpl implements Game {
     private boolean isFirstRoll = true;
     // Cater to an additional frame in-case of Spare/Strike in last
@@ -18,7 +18,13 @@ public class GameImpl implements Game {
     }
 
     public int score() {
-        int score = 0;
+        int score = 0, strikeCount = 0;
+
+        //handle all strike as special scenario
+        for (Frame f : frames) {
+            if (f.isStrike()) strikeCount++;
+        }
+        if ( strikeCount == 11) return 300;
 
         for ( int i=0; i<frames.size();i++) {
             score +=  scorePerFrame(i);
