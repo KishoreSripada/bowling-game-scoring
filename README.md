@@ -1,7 +1,26 @@
-TODO - Details on how to run the application here
+# DiUS Score Generator for Bowling Club
 
-For now ,adding problem description 
-Problem Description - 
+## Example usage
+Main class to produce the output for the examples mentioned in problem statement
+
+## Getting Started
+
+### Build
+
+Build ->  `mvn clean install`
+Location of Jar -> `./target/` directory
+Run the below command in target directory 
+java -jar bowling-1.0.jar
+
+### Test
+GameImplTest.java -> Contains all different combination of tests
+The code coverage for application while running tests is 80% (As this does not cover BowlingGameMain.java). The coverage for BowlingGameMain.java is covered when its run from the jar generated.
+
+## Author
+
+Kishore Sripada <sripadaskishore@gmail.com>
+
+## Problem Description - 
 
 DiUS is starting a bowling club. To help with the club, we have engaged you to program a scoring system.
 
